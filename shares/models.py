@@ -15,9 +15,9 @@ class Share(models.Model):
 
 
 class InventoryShare(models.Model):
-    owner = models.ForeignKey(User, on_delete=models.PROTECT, related_name='user')
-    share = models.ForeignKey(Share, on_delete=models.PROTECT, related_name='share')
+    owner = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL, related_name='user')
+    share = models.ForeignKey(Share, blank=True, null=True, on_delete=models.SET_NULL, related_name='share')
     count = models.IntegerField(default=0)
 
     def __str__(self):
-        return f'{self.owner.username} {self.share.name} {self.count}'
+        return f'{self.owner} {self.share.name} {self.count}'
