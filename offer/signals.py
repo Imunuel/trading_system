@@ -4,7 +4,8 @@ from django.dispatch import receiver
 from django.db import transaction
 
 from users.models import Inventory
-from offer.models import SimpleOffer
+from offer.models import SimpleOffer, PremiumOffer, Trade
+from shares.models import Share
 
 User = get_user_model()
 
@@ -19,10 +20,16 @@ def create_inventory(sender, instance, created, *args, **kwargs):
 def search_buy_simple_offer(sender, instance, *args, **kwargs):
     if instance.order_type == 'sell' and instance.is_active:
         simple_offers = SimpleOffer.objects.filter(order_type='buy', share=instance.share, is_active=True)
+        share = instance.share
 
         for buy_offer in simple_offers:
 
-            _min_count = min(instance.current_count, buy_offer.current_count)
+            _min_count_offer = min(instance.current_count, buy_offer.current_count)
+            _min_price_offer = share.current_price * _min_count_offer #500
+            
+            buy_price = buy_offer.user.inventory // share.current_price #5
+
+
 
             buy_offer.current_count -= _min_count
             instance.current_count -= _min_count

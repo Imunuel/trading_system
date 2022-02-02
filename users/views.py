@@ -27,8 +27,6 @@ class CreateUser(mixins.CreateModelMixin, viewsets.GenericViewSet):
 
 class ChangeInventory(mixins.ListModelMixin,viewsets.GenericViewSet):
 
-    # serializer_class = UserInventorySerializer
-
     def get_serializer_class(self):
         if self.action == "change_balans":
             return ChangeUserInventorySerializer

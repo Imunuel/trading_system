@@ -8,7 +8,7 @@ from users.serializers import UserSerializer
 
 class ShareSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Share()
+        model = Share
         fields = (
             'name',
         )
@@ -38,4 +38,31 @@ class PremiumOfferSerializer(serializers.ModelSerializer):
             'price',
             'order_type',
             'is_active',
+        )
+
+
+class CreateSimpleOfferSerialiazer(serializers.ModelSerializer):
+    share = ShareSerializer()
+
+    class Meta:
+        model = SimpleOffer
+        fields = (
+            'share',
+            'count',
+            'order_type',
+            'is_active'
+        )
+
+
+class CreatePremiumOfferSerialiazer(serializers.ModelSerializer):
+    share = ShareSerializer()
+    
+    class Meta:
+        model = PremiumOffer()
+        fields = (
+            'share',
+            'count',
+            'price',
+            'order_type',
+            'is_active'
         )

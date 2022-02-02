@@ -3,13 +3,16 @@ from django.contrib.auth.models import User
 
 from shares.models import Share
 
+
+ORDER_TYPE = (('buy', 'Buy'), ('sell', 'Sell'))
+
 class SimpleOffer(models.Model):
     user = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL)
     share = models.ForeignKey(Share, blank=True, null=True, on_delete=models.SET_NULL)
     count = models.IntegerField(default=0)
     current_count = models.IntegerField(default=0)
 
-    order_type = models.CharField(max_length=4)
+    order_type = models.CharField(max_length=4, choices=ORDER_TYPE)
     is_active = models.BooleanField()
 
     def __str__(self):
@@ -23,7 +26,7 @@ class PremiumOffer(models.Model):
     current_count = models.IntegerField(default=0)
     price = models.IntegerField(default=0)
 
-    order_type = models.CharField(max_length=3)
+    order_type = models.CharField(max_length=4, choices=ORDER_TYPE)
     is_active = models.BooleanField()
 
     def __str__(self):
