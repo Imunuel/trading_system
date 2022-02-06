@@ -19,6 +19,7 @@ class SimpleOfferSerializer(serializers.ModelSerializer):
     class Meta:
         model = SimpleOffer
         fields = (
+            'id',
             'share',
             'count',
             'current_count',
@@ -32,6 +33,7 @@ class PremiumOfferSerializer(serializers.ModelSerializer):
     class Meta:
         model = PremiumOffer
         fields = (
+            'id',
             'share',
             'count',
             'current_count',
@@ -62,6 +64,25 @@ class CreatePremiumOfferSerialiazer(serializers.ModelSerializer):
         fields = (
             'share',
             'count',
+            'price',
+            'order_type',
+            'is_active'
+        )
+
+
+class UpdateDeleteMySimpleOfferSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SimpleOffer
+        fields = (
+            'order_type',
+            'is_active'
+        )
+
+
+class UpdateDeleteMyPremiumOfferSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PremiumOffer
+        fields = (
             'price',
             'order_type',
             'is_active'
