@@ -10,8 +10,9 @@ from .serializers import (SimpleOfferSerializer, PremiumOfferSerializer,
                             CreatePremiumOfferSerialiazer, 
                             CreateSimpleOfferSerialiazer,
                             UpdateDeleteMySimpleOfferSerializer,
-                            UpdateDeleteMyPremiumOfferSerializer)
-from .services import create_simple_offer, create_premium_offer, serialization
+                            UpdateDeleteMyPremiumOfferSerializer,
+                            ActivateAllOfferSerializer)
+from .services import create_simple_offer, create_premium_offer, serialization, ActivateAllOffer
 
 
 class ListAllOffer(viewsets.GenericViewSet):
@@ -61,19 +62,36 @@ class ListAllOffer(viewsets.GenericViewSet):
         return Response(data=False, status=status.HTTP_400_BAD_REQUEST)
 
 
-class UpdateDeleteMySimpleOfferAPI(mixins.UpdateModelMixin, mixins.DestroyModelMixin ,viewsets.GenericViewSet):
+# class UpdateDeleteMySimpleOfferAPI(mixins.UpdateModelMixin, mixins.DestroyModelMixin ,viewsets.GenericViewSet):
+
+#     def get_serializer_class(self):
+#         return UpdateDeleteMySimpleOfferSerializer
+
+#     def get_queryset(self):
+#         return SimpleOffer.objects.filter(user=self.request.user)
+
+
+# class UpdateDeleteMyPremiumOfferAPI(mixins.UpdateModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
+
+#     def get_serializer_class(self):
+#         return UpdateDeleteMyPremiumOfferSerializer
+
+#     def get_queryset(self):
+#         return PremiumOffer.objects.filter(user=self.request.user)
+
+
+class ActivateAllOfferAPI(viewsets.GenericViewSet):
 
     def get_serializer_class(self):
-        return UpdateDeleteMySimpleOfferSerializer
+        if self.action == 'activate':
+            return ActivateAllOfferSerializer
 
-    def get_queryset(self):
-        return SimpleOffer.objects.filter(user=self.request.user)
-
-
-class UpdateDeleteMyPremiumOfferAPI(mixins.UpdateModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
-
-    def get_serializer_class(self):
-        return UpdateDeleteMyPremiumOfferSerializer
-
-    def get_queryset(self):
-        return PremiumOffer.objects.filter(user=self.request.user)
+    @action(methods=['POST',], detail=False)
+    def activate(self, request, *args, **kwargs):
+        serializer = self.get_serializer_class()
+        serializer = serializer(request.data)
+        ActivateAllOffer(serializer.data)
+        if serializer.data:
+            return Response(data=True, status=status.HTTP_200_OK)
+        elif not serializer.data:
+            return Response(data=False, status=status.HTTP_200_OK)

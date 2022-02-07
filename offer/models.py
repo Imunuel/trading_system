@@ -16,7 +16,10 @@ class SimpleOffer(models.Model):
     is_active = models.BooleanField()
 
     def __str__(self):
-        return f'{self.user} {self.order_type} {self.is_active}'
+        return f'{self.user} {self.share} {self.order_type} {self.is_active}'
+
+    class Meta:
+        ordering = ('user', )
 
 
 class PremiumOffer(models.Model):
@@ -30,7 +33,10 @@ class PremiumOffer(models.Model):
     is_active = models.BooleanField()
 
     def __str__(self):
-        return f'{self.user} {self.order_type} {self.is_active}'
+        return f'{self.user} {self.share} {self.order_type} {self.is_active}'
+    
+    class Meta:
+        ordering = ('user', )
 
 class Trade(models.Model):
     share = models.ForeignKey(Share, blank=True, null=True, on_delete=models.SET_NULL)
@@ -39,9 +45,9 @@ class Trade(models.Model):
 
     buyer = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL, related_name='buyer')
     seller = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL, related_name='seller')
-    
-    buyer_offer = models.CharField(max_length=255)
-    seller_offer = models.CharField(max_length=255)
 
     def __str__(self):
         return f'buyer: {self.buyer} \ seller: {self.seller}'
+
+    class Meta:
+        ordering = ('buyer', 'seller')

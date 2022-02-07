@@ -5,6 +5,9 @@ from shares.models import Share
 from users.serializers import UserSerializer
 
 
+class ActivateAllOfferSerializer(serializers.Serializer):
+    is_active = serializers.BooleanField()
+
 
 class ShareSerializer(serializers.ModelSerializer):
     class Meta:

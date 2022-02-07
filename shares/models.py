@@ -10,14 +10,31 @@ class Share(models.Model):
     current_price = models.IntegerField(default=0)
     past_price = models.IntegerField(default=0)
 
+    class Meta:
+        ordering = ('name',)
+
     def __str__(self):
         return self.name
 
 
 class InventoryShare(models.Model):
-    owner = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL, related_name='user')
+    owner = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL, related_name='InventoryShare')
     share = models.ForeignKey(Share, blank=True, null=True, on_delete=models.SET_NULL, related_name='share')
     count = models.IntegerField(default=0)
 
+    class Meta:
+        ordering = ('owner', 'share')
+
     def __str__(self):
         return f'{self.owner} {self.share.name} {self.count}'
+
+
+class GlobalInventory(models.Model):
+    share = models.ForeignKey(Share, blank=True, null=True, on_delete=models.SET_NULL, related_name='global_share')
+    count = models.IntegerField(default=0)
+
+    class Meta:
+        ordering = ('share',)
+
+    def __str__(self):
+        return f'{self.share} {self.count}'

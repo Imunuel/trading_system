@@ -7,5 +7,9 @@ class Inventory(models.Model):
     balans = models.IntegerField(default=0)
     premium = models.BooleanField(default=False)
 
+    class Meta:
+        ordering = ('owner', 'premium')
+
     def __str__(self):
         return f'{self.owner} {self.balans} {self.premium}' 
+
