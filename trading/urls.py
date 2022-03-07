@@ -42,5 +42,6 @@ urlpatterns = [
 
     path('offer/', include('offer.urls')),
     path('users/', include('users.urls')),
+    path('share/', include('shares.urls')),
 
 ]

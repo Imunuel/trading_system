@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import SimpleOffer, PremiumOffer
+from .models import SimpleOffer, PremiumOffer, Trade
 from shares.models import Share
 from users.serializers import UserSerializer
 
@@ -73,7 +73,7 @@ class CreatePremiumOfferSerialiazer(serializers.ModelSerializer):
         )
 
 
-class UpdateDeleteMySimpleOfferSerializer(serializers.ModelSerializer):
+class UpdateMySimpleOfferSerializer(serializers.ModelSerializer):
     class Meta:
         model = SimpleOffer
         fields = (
@@ -82,11 +82,38 @@ class UpdateDeleteMySimpleOfferSerializer(serializers.ModelSerializer):
         )
 
 
-class UpdateDeleteMyPremiumOfferSerializer(serializers.ModelSerializer):
+class UpdateMyPremiumOfferSerializer(serializers.ModelSerializer):
     class Meta:
         model = PremiumOffer
         fields = (
             'price',
             'order_type',
             'is_active'
+        )
+
+
+class DeleteSimpleOfferSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SimpleOffer
+        fields = ('id',)
+
+
+class DeletePremiumOfferSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PremiumOffer
+        fields = ('id',)
+
+
+class TradeSerializer(serializers.ModelSerializer):
+    share = ShareSerializer()
+    buyer = UserSerializer()
+    seller = UserSerializer()
+    class Meta:
+        model = Trade
+        fields = (
+            'share',
+            'quantity',
+            'cost',
+            'buyer',
+            'seller'
         )
